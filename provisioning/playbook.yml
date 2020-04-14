@@ -1,0 +1,60 @@
+---
+
+- hosts: all
+  become: yes
+  roles:
+    - init
+
+- hosts: isp
+  become: yes
+  vars:
+    ipv4_eth1: '10.0.1.201'
+    ipv4_eth2: '10.10.1.1'
+    ipv6_eth1: '2001:470:28:b72::cafe'
+    ipv6_eth2: '2600:70ff:b0ea::cafe'
+    ipv4_gw: '10.0.1.1'
+    ipv6_gw: '2001:470:28:b72:52ff:20ff:fe27:4ff8'
+  roles:
+    - router
+    
+- hosts: router1
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.1.2'
+    ipv4_eth2: '10.10.10.2'
+    ipv6_eth1: '2600:70ff:b0ea::1'
+    ipv6_eth2: '2600:70ff:b0ea:1::b00b'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea::cafe'
+    vrrp_state: 'MASTER'
+    vrrp_prio: '101'
+
+  roles:
+    - router
+
+- hosts: router2
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.1.3'
+    ipv4_eth2: '10.10.10.3'
+    ipv6_eth1: '2600:70ff:b0ea::2'
+    ipv6_eth2: '2600:70ff:b0ea:1::dead'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea::cafe'
+    vrrp_state: 'BACKUP'
+    vrrp_prio: '100'
+  
+  roles:
+    - router
+
+- hosts: balancer
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.10'
+    ipv6_eth1: '2600:70ff:b0ea:1::10'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+  
+  roles: 
+    - balancer
+  

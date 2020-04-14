@@ -1,0 +1,5 @@
+---
+# tasks file for webserver
+
+- name: Install Nginx
+  yum: name=nginx state=latest

@@ -2,8 +2,8 @@
 
 - hosts: all
   become: yes
-#  roles:
-#    - init
+  roles:
+    - init
 
 - hosts: isp
   become: yes
@@ -72,7 +72,7 @@
   
   roles:
     - NetConfig
-    - webserver
+    - WebApp
 
 - hosts: webapp2
   become: yes
@@ -84,4 +84,49 @@
   
   roles: 
     - NetConfig
-    - webserver
+    - WebApp
+
+- hosts: dbproxy
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.13'
+    ipv6_eth1: '2600:70ff:b0ea:1::13'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+  
+  roles: 
+    - NetConfig
+
+- hosts: db1
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.14'
+    ipv6_eth1: '2600:70ff:b0ea:1::14'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+  
+  roles: 
+    - NetConfig
+
+
+- hosts: db2
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.15'
+    ipv6_eth1: '2600:70ff:b0ea:1::15'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+  
+  roles: 
+    - NetConfig
+
+- hosts: db3
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.16'
+    ipv6_eth1: '2600:70ff:b0ea:1::16'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+  
+  roles: 
+    - NetConfig

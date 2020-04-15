@@ -1,9 +1,11 @@
 ---
 # tasks file for NetConfig
 
-- name: Manage network
+- name: Disable Network Manager
   service: name=NetworkManager enabled=no state=stopped
-  notify: Kill dhclient
+  
+- name: Kill dhclient
+  shell: if pkill dhclient; then echo 1; else echo 0; fi
   
 - name: Configure network IPV6FORWARDING
   copy: src=network dest=/etc/sysconfig/network

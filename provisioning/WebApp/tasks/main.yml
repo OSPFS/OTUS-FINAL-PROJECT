@@ -1,5 +1,5 @@
 ---
-# tasks file for webserver
+# tasks file for WebApp
 
 - name: Install Nginx
   yum: name=nginx state=latest
@@ -9,3 +9,4 @@
     name: nginx 
     enabled: yes
     state: started
+

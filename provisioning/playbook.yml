@@ -2,8 +2,9 @@
 
 - hosts: all
   become: yes
-#  roles:
-#    - init
+  roles:
+    - init
+    - NetConfig
 
 - hosts: isp
   become: yes
@@ -58,3 +59,24 @@
   roles: 
     - balancer
   
+- hosts: webapp1
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.11'
+    ipv6_eth1: '2600:70ff:b0ea:1::11'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+  
+  roles: 
+    - webserver
+
+- hosts: webapp2
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.12'
+    ipv6_eth1: '2600:70ff:b0ea:1::12'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+  
+  roles: 
+    - webserver

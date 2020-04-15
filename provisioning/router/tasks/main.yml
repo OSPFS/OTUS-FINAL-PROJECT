@@ -21,21 +21,6 @@
     state: present
     reload: yes
 
-
-- name: Configure network interface eth0
-  copy: src=ifcfg-eth0 dest=/etc/sysconfig/network-scripts/ifcfg-eth0
- 
-- name: Configure network IPV6FORWARDING
-  copy: src=network dest=/etc/sysconfig/network
-
-- name: Configure network interface eth1
-  template: src=ifcfg-eth1.j2 dest=/etc/sysconfig/network-scripts/ifcfg-eth1
-
-- name: Configure network interface eth2
-  template: src=ifcfg-eth2.j2 dest=/etc/sysconfig/network-scripts/ifcfg-eth2
-  notify: Manage network
-
-
 - name: Install Quagga
   yum: name=quagga state=latest
 

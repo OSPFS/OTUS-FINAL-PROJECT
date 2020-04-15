@@ -1,10 +1,6 @@
 ---
 # tasks file for balancer
 
-- name: Configure network interface eth1
-  template: src=ifcfg-eth1.j2 dest=/etc/sysconfig/network-scripts/ifcfg-eth1
-  notify: Manage network
-
 - name: Install Nginx
   yum: name=nginx state=latest
 

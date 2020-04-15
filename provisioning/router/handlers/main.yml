@@ -1,13 +1,7 @@
 ---
 # handlers file for router
-- name: Manage network
-  service: name=NetworkManager enabled=no state=stopped
-
-- name: Kill dhclient
-  shell: pkill dhclient
-  notify: Restart network
-
+  
 - name: Restart network
-  service:
-    name: network
-    state: restarted
+  service: name=network state=restarted
+  
+

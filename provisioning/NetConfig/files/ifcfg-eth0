@@ -3,4 +3,4 @@ BOOTPROTO="dhcp"
 ONBOOT="yes"
 TYPE="Ethernet"
 PERSISTENT_DHCLIENT="yes"
-DEFROUTE=no
+DEFROUTE="no"

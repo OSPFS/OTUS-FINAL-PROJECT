@@ -3,11 +3,8 @@
 
 - name: Manage network
   service: name=NetworkManager enabled=no state=stopped
-
-- name: Kill dhclient
-  shell: pkill dhclient
-  notify: Restart network
-
+  notify: Kill dhclient
+  
 - name: Configure network IPV6FORWARDING
   copy: src=network dest=/etc/sysconfig/network
   when: 

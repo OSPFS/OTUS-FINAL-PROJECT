@@ -2,9 +2,8 @@
 
 - hosts: all
   become: yes
-  roles:
-    - init
-    - NetConfig
+#  roles:
+#    - init
 
 - hosts: isp
   become: yes
@@ -16,6 +15,7 @@
     ipv4_gw: '10.0.1.1'
     ipv6_gw: '2001:470:28:b72:52ff:20ff:fe27:4ff8'
   roles:
+    - NetConfig
     - router
     
 - hosts: router1
@@ -31,6 +31,7 @@
     vrrp_prio: '101'
 
   roles:
+    - NetConfig
     - router
 
 - hosts: router2
@@ -46,6 +47,7 @@
     vrrp_prio: '100'
   
   roles:
+    - NetConfig
     - router
 
 - hosts: balancer
@@ -57,6 +59,7 @@
     ipv6_gw: '2600:70ff:b0ea:1::b00b'
   
   roles: 
+    - NetConfig
     - balancer
   
 - hosts: webapp1
@@ -67,7 +70,8 @@
     ipv4_gw: '10.10.10.1'
     ipv6_gw: '2600:70ff:b0ea:1::b00b'
   
-  roles: 
+  roles:
+    - NetConfig
     - webserver
 
 - hosts: webapp2
@@ -79,4 +83,5 @@
     ipv6_gw: '2600:70ff:b0ea:1::b00b'
   
   roles: 
+    - NetConfig
     - webserver

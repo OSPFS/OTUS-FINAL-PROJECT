@@ -2,8 +2,8 @@
 
 - hosts: all
   become: yes
-  roles:
-    - init
+#  roles:
+#    - init
 
 - hosts: isp
   become: yes
@@ -24,7 +24,7 @@
     ipv4_eth2: '10.10.10.2'
     ipv6_eth1: '2600:70ff:b0ea::1'
     ipv6_eth2: '2600:70ff:b0ea:1::b00b'
-    ipv4_gw: '10.10.10.1'
+    ipv4_gw: '10.10.1.1'
     ipv6_gw: '2600:70ff:b0ea::cafe'
     vrrp_state: 'MASTER'
     vrrp_prio: '101'
@@ -39,7 +39,7 @@
     ipv4_eth2: '10.10.10.3'
     ipv6_eth1: '2600:70ff:b0ea::2'
     ipv6_eth2: '2600:70ff:b0ea:1::dead'
-    ipv4_gw: '10.10.10.1'
+    ipv4_gw: '10.10.1.1'
     ipv6_gw: '2600:70ff:b0ea::cafe'
     vrrp_state: 'BACKUP'
     vrrp_prio: '100'

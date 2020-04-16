@@ -2,8 +2,8 @@
 
 - hosts: all
   become: yes
-  roles:
-    - init
+#  roles:
+#    - init
 
 - hosts: isp
   become: yes
@@ -71,7 +71,7 @@
     ipv6_gw: '2600:70ff:b0ea:1::b00b'
   
   roles:
-    - NetConfig
+ #   - NetConfig
     - WebApp
 
 - hosts: webapp2
@@ -107,6 +107,10 @@
   
   roles: 
     - NetConfig
+    - Database
+
+
+
 
 
 - hosts: db2

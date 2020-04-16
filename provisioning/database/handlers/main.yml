@@ -1,2 +1,5 @@
 ---
-# handlers file for database
+# handlers file for Database
+
+- name: InitDB
+  command: /usr/pgsql-9.6/bin/postgresql96-setup initdb

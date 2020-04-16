@@ -21,8 +21,14 @@
     state: present
     reload: yes
 
-- name: Install Quagga
-  yum: name=quagga state=latest
+- name: Install Quagga and tcpdump
+  yum: name={{ item }} state=latest
+  loop:
+    - tcpdump
+    - quagga
+    
+- name: Configure SELINUX for quagga
+  command: setsebool -P zebra_write_config 1
 
 - name: Configure BGP for isp
   copy: src=bgpd.isp dest=/etc/quagga/bgpd.conf mode=0600 owner=quagga
@@ -36,13 +42,13 @@
   service:
     name: zebra
     enabled: yes
-    state: started
+    state: restarted
 
 - name: Enable BGPd
   service:
     name: bgpd
     enabled: yes
-    state: started
+    state: restarted
 
 - name: Install and configure VRRP
   block:

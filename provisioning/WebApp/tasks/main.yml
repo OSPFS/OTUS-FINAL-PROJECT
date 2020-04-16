@@ -1,12 +1,53 @@
 ---
 # tasks file for WebApp
+- name: Install Nginx, yum-utils
+  yum: name={{ item }} state=latest
+  loop:
+    - nginx
+    - yum-utils
 
-- name: Install Nginx
-  yum: name=nginx state=latest
+- name: Site config
+  copy: src=cms.zzz.chat.conf dest=/etc/nginx/conf.d/cms.zzz.chat
+
+- name: Install remi repo
+  yum: name=http://rpms.remirepo.net/enterprise/remi-release-7.rpm state=present
+
+- name: Enable PHP73 Repo
+  command: yum-config-manager --enable remi-php73
+
+- name: Install PHP stuff
+  yum: name={{ item }} state=latest
+  loop:
+    - php-fpm
+    - php-cli
+    - php-gd
+    - php-opcache
+    - php-mysqlnd
+    - php-json
+    - php-mcrypt
+    - php-xml
+    - php-curl
+
+- name: Configure PHP-FPM
+  shell: sed -i 's/user \= apache/user \= nginx/g' /etc/php-fpm.d/www.conf && 
+           sed -i 's/group \= apache/group \= nginx/g' /etc/php-fpm.d/www.conf && 
+           chown -R root:nginx /var/lib/php/*
+
+- name: Download joomla
+  shell: wget -O /tmp/Joomla_3-9-16-Stable-Full_Package.zip https://downloads.joomla.org/us/cms/joomla3/3-9-16/Joomla_3-9-16-Stable-Full_Package.zip &&
+         mkdir -p /var/www/cms.zzz.chat &&
+         unzip /tmp/Joomla_3-9-16-Stable-Full_Package.zip -d var/www/cms.zzz.chat &&
+         chown -R nginx:nginx /var/www/cms.zzz.chat
 
 - name: Start Nginx
   service: 
     name: nginx 
     enabled: yes
-    state: started
+    state: restarted
+
+- name: Start PHP-FPM
+  service: 
+    name: php-fpm 
+    enabled: yes
+    state: restarted
 

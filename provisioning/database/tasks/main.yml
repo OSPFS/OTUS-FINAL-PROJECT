@@ -1,3 +1,86 @@
 ---
-# tasks file for database
+# tasks file for Database
 
+# - name: Install Postgre REPO
+#   yum:
+#     name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+#     state: present
+
+# - name: Install PostgreSQL
+#   yum: name={{ item }} state=latest
+#   loop:
+#     - postgresql96
+#     - postgresql96-server
+#     - postgresql96-contrib 
+#     - postgresql96-libs
+#     - python-psycopg2    
+
+# - name: InitDB
+#   command: /usr/pgsql-9.6/bin/postgresql96-setup initdb
+
+- name: Allow connect from localnet
+  lineinfile:
+    path: /var/lib/pgsql/9.6/data/pg_hba.conf
+    regexp: '# IPv4 local connections:'
+    insertafter: '# IPv4 local connections:'
+    line: host    all             all             10.10.10.0/24            md5
+    
+- name: Allow connect from localnet
+  lineinfile:
+    path: /var/lib/pgsql/9.6/data/pg_hba.conf
+    regexp: 'local   all             all                                     peer'
+    line: local   all             all                                     trust
+
+- name: Allow connect from localnet
+  lineinfile:
+    path: /var/lib/pgsql/9.6/data/pg_hba.conf
+    regexp: 'host    all             all             ::1/128                 ident'
+    line: host    all             all             ::1/128                 trust
+
+- name: Allow connect from localnet
+  lineinfile:
+    path: /var/lib/pgsql/9.6/data/pg_hba.conf
+    regexp: 'host    all             all             127.0.0.1/32            ident'
+    line: host    all             all             127.0.0.1/32            trust
+
+- name: Listen all addresses
+  lineinfile:
+    path: /var/lib/pgsql/9.6/data/postgresql.conf
+    regexp: '#listen_addresses ='
+    line: listen_addresses = '*'
+
+- name: Sudoers postgres
+  lineinfile:
+    path: /etc/sudoers
+    line: postgres   ALL=(ALL)   NOPASSWD:ALL
+
+- name: Start PostgreSQL Server
+  service: 
+    name: postgresql-9.6
+    enabled: yes
+    state: restarted
+
+
+# - name: Change postgres password
+#   shell: sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'P0roL';"
+
+- name: Create a new database with name "dbjoom"  
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: dbjoom
+    encoding: UTF-8
+
+- name: Create DB User
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    db: dbjoom
+    name: adminjoom
+    password: LoG0peD
+    state: present
+    priv: CONNECT
+    login_host: db1
+    port: 5432
+    login_user: postgres
+    # login_password: P0roL

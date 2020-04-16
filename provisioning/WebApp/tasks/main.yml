@@ -33,11 +33,11 @@
            sed -i 's/group \= apache/group \= nginx/g' /etc/php-fpm.d/www.conf && 
            chown -R root:nginx /var/lib/php/*
 
-- name: Download joomla
-  shell: wget -O /tmp/Joomla_3-9-16-Stable-Full_Package.zip https://downloads.joomla.org/us/cms/joomla3/3-9-16/Joomla_3-9-16-Stable-Full_Package.zip &&
-         mkdir -p /var/www/cms.zzz.chat &&
-         unzip /tmp/Joomla_3-9-16-Stable-Full_Package.zip -d var/www/cms.zzz.chat &&
-         chown -R nginx:nginx /var/www/cms.zzz.chat
+# - name: Download joomla
+#   shell: wget -O /tmp/Joomla_3-9-16-Stable-Full_Package.zip https://downloads.joomla.org/us/cms/joomla3/3-9-16/Joomla_3-9-16-Stable-Full_Package.zip &&
+#          mkdir -p /var/www/cms.zzz.chat &&
+#          unzip /tmp/Joomla_3-9-16-Stable-Full_Package.zip -d var/www/cms.zzz.chat &&
+#          chown -R nginx:nginx /var/www/cms.zzz.chat
 
 - name: Start Nginx
   service: 

@@ -2,8 +2,8 @@
 
 - hosts: all
   become: yes
-#  roles:
-#    - init
+  roles:
+    - init
 
 - hosts: isp
   become: yes
@@ -24,7 +24,7 @@
     ipv4_eth1: '10.10.1.2'
     ipv4_eth2: '10.10.10.2'
     ipv6_eth1: '2600:70ff:b0ea::1'
-    ipv6_eth2: '2600:70ff:b0ea:1::b00b'
+    ipv6_eth2: '2600:70ff:b0ea:1::b0b'
     ipv4_gw: '10.10.1.1'
     ipv6_gw: '2600:70ff:b0ea::cafe'
     vrrp_state: 'MASTER'
@@ -56,7 +56,7 @@
     ipv4_eth1: '10.10.10.10'
     ipv6_eth1: '2600:70ff:b0ea:1::10'
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles: 
     - NetConfig
@@ -68,10 +68,10 @@
     ipv4_eth1: '10.10.10.11'
     ipv6_eth1: '2600:70ff:b0ea:1::11'
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles:
- #   - NetConfig
+    - NetConfig
     - WebApp
 
 - hosts: webapp2
@@ -80,7 +80,7 @@
     ipv4_eth1: '10.10.10.12'
     ipv6_eth1: '2600:70ff:b0ea:1::12'
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles: 
     - NetConfig
@@ -92,7 +92,7 @@
     ipv4_eth1: '10.10.10.13'
     ipv6_eth1: '2600:70ff:b0ea:1::13'
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles: 
     - NetConfig
@@ -103,15 +103,11 @@
     ipv4_eth1: '10.10.10.14'
     ipv6_eth1: '2600:70ff:b0ea:1::14'
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles: 
     - NetConfig
     - Database
-
-
-
-
 
 - hosts: db2
   become: yes
@@ -119,10 +115,11 @@
     ipv4_eth1: '10.10.10.15'
     ipv6_eth1: '2600:70ff:b0ea:1::15'
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles: 
     - NetConfig
+    - Database
 
 - hosts: db3
   become: yes
@@ -130,7 +127,8 @@
     ipv4_eth1: '10.10.10.16'
     ipv6_eth1: '2600:70ff:b0ea:1::16'
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b00b'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles: 
     - NetConfig
+    - Database

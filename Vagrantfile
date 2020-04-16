@@ -33,36 +33,36 @@ MACHINES = {
                      {ip: '10.10.10.11', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net"},                     
                   ]
     },
-    :webapp2 => {
-          :box_name => "centos/7",
-          :net => [
-                     {ip: '10.10.10.12', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net"},                     
-                  ]
-    },
-    :dbproxy => {
-          :box_name => "centos/7",
-          :net => [
-                     {ip: '10.10.10.13', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net"},                     
-                  ]
-    },
+    # :webapp2 => {
+    #       :box_name => "centos/7",
+    #       :net => [
+    #                  {ip: '10.10.10.12', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net"},                     
+    #               ]
+    # },
+    # :dbproxy => {
+    #       :box_name => "centos/7",
+    #       :net => [
+    #                  {ip: '10.10.10.13', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net"},                     
+    #               ]
+    # },
     :db1 => {
           :box_name => "centos/7",
           :net => [
                      {ip: '10.10.10.14', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net"},                     
                   ]
     },
-    :db2 => {
-          :box_name => "centos/7",
-          :net => [
-                     {ip: '10.10.10.15', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net"},                     
-                  ]
-    },
-    :db3 => {
-          :box_name => "centos/7",
-          :net => [
-                     {ip: '10.10.10.16', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net"},                     
-                  ]
-    },
+    # :db2 => {
+    #       :box_name => "centos/7",
+    #       :net => [
+    #                  {ip: '10.10.10.15', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net"},                     
+    #               ]
+    # },
+    # :db3 => {
+    #       :box_name => "centos/7",
+    #       :net => [
+    #                  {ip: '10.10.10.16', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net"},                     
+    #               ]
+    # },
 }
   
   Vagrant.configure("2") do |config|

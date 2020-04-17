@@ -60,27 +60,22 @@
     enabled: yes
     state: restarted
 
-
-# - name: Change postgres password
-#   shell: sudo -u postgres psql -c "ALTER USER postgres PASSWORD 'P0roL';"
-
 - name: Create a new database with name "dbjoom"  
   become: yes
   become_user: postgres
   postgresql_db:
-    name: dbjoom
+    name: cmsdb
+    state: present
     encoding: UTF-8
 
 - name: Create DB User
   become: yes
   become_user: postgres
   postgresql_user:
-    db: dbjoom
-    name: adminjoom
+    db: cmsdb
+    name: cmska
     password: LoG0peD
     state: present
     priv: CONNECT
-    login_host: db1
-    port: 5432
     login_user: postgres
-    # login_password: P0roL
+

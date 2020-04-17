@@ -9,10 +9,7 @@
   
 - name: Configure network IPV6FORWARDING
   copy: src=network dest=/etc/sysconfig/network
-  when: 
-    - ansible_facts['hostname'] == "isp"
-    - ansible_facts['hostname'] == "router1"
-    - ansible_facts['hostname'] == "router1"
+  when: (ansible_facts['hostname'] == "isp") or (ansible_facts['hostname'] == "router1") or (ansible_facts['hostname'] == "router2")
 
 - name: Configure network interface eth0
   copy: src=ifcfg-eth0 dest=/etc/sysconfig/network-scripts/ifcfg-eth0

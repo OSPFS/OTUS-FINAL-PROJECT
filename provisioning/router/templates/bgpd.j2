@@ -10,8 +10,8 @@ hostname {{ ansible_hostname }}
 router bgp 65500
  bgp router-id {{ ipv4_eth1 }}
  neighbor 10.10.1.1 remote-as 65000
- neighbor 2600:70ff:b0ea::cafe remote-as 65000
- neighbor 2600:70ff:b0ea::cafe next-hop-self
+ neighbor 2600:70ff:b0ea:cafe::1 remote-as 65000
+ neighbor 2600:70ff:b0ea:cafe::1 next-hop-self
  !
  address-family ipv4 unicast
   network 10.10.10.0/24
@@ -20,7 +20,7 @@ router bgp 65500
 !
  address-family ipv6
   network 2600:70ff:b0ea:1::/64
-  neighbor 2600:70ff:b0ea::cafe activate
+  neighbor 2600:70ff:b0ea:cafe::1 activate
  exit-address-family
 !
 line vty

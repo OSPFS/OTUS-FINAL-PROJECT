@@ -14,17 +14,17 @@ router bgp 65000
  neighbor 10.10.1.3 ebgp-multihop 255
  neighbor 10.10.1.3 next-hop-self
  neighbor 10.10.1.3 route-map set-nexthop out
- neighbor 2600:70ff:b0ea::1 remote-as 65500
- neighbor 2600:70ff:b0ea::1 next-hop-self
- neighbor 2600:70ff:b0ea::2 remote-as 65500
- neighbor 2600:70ff:b0ea::2 next-hop-self
+ neighbor 2600:70ff:b0ea:cafe::2 remote-as 65500
+ neighbor 2600:70ff:b0ea:cafe::2 next-hop-self
+ neighbor 2600:70ff:b0ea:cafe::3 remote-as 65500
+ neighbor 2600:70ff:b0ea:cafe::3 next-hop-self
 !
  address-family ipv6
  network 2001:470:28:b72::/64
- neighbor 2600:70ff:b0ea::1 activate
- neighbor 2600:70ff:b0ea::1 soft-reconfiguration inbound
- neighbor 2600:70ff:b0ea::2 activate
- neighbor 2600:70ff:b0ea::2 soft-reconfiguration inbound
+ neighbor 2600:70ff:b0ea:cafe::2 activate
+ neighbor 2600:70ff:b0ea:cafe::2 soft-reconfiguration inbound
+ neighbor 2600:70ff:b0ea:cafe::3 activate
+ neighbor 2600:70ff:b0ea:cafe::3 soft-reconfiguration inbound
  exit-address-family
 !
 line vty

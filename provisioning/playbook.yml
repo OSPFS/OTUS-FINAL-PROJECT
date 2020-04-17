@@ -11,7 +11,7 @@
     ipv4_eth1: '10.0.1.201'
     ipv4_eth2: '10.10.1.1'
     ipv6_eth1: '2001:470:28:b72::cafe'
-    ipv6_eth2: '2600:70ff:b0ea::cafe'
+    ipv6_eth2: '2600:70ff:b0ea:cafe::1'
     ipv4_gw: '10.0.1.1'
     ipv6_gw: '2001:470:28:b72:52ff:20ff:fe27:4ff8'
   roles:
@@ -23,10 +23,10 @@
   vars:
     ipv4_eth1: '10.10.1.2'
     ipv4_eth2: '10.10.10.2'
-    ipv6_eth1: '2600:70ff:b0ea::1'
-    ipv6_eth2: '2600:70ff:b0ea:1::b0b'
+    ipv6_eth1: '2600:70ff:b0ea:cafe::2'
+    ipv6_eth2: '2600:70ff:b0ea:1::b00b'
     ipv4_gw: '10.10.1.1'
-    ipv6_gw: '2600:70ff:b0ea::cafe'
+    ipv6_gw: '2600:70ff:b0ea:cafe::1'
     vrrp_state: 'MASTER'
     vrrp_prio: '101'
 
@@ -39,10 +39,10 @@
   vars:
     ipv4_eth1: '10.10.1.3'
     ipv4_eth2: '10.10.10.3'
-    ipv6_eth1: '2600:70ff:b0ea::2'
+    ipv6_eth1: '2600:70ff:b0ea:cafe::3'
     ipv6_eth2: '2600:70ff:b0ea:1::dead'
     ipv4_gw: '10.10.1.1'
-    ipv6_gw: '2600:70ff:b0ea::cafe'
+    ipv6_gw: '2600:70ff:b0ea:cafe::1'
     vrrp_state: 'BACKUP'
     vrrp_prio: '100'
   

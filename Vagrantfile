@@ -98,4 +98,3 @@ MACHINES = {
     end
 
   end
-  

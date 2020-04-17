@@ -2,8 +2,8 @@
 
 - hosts: all
   become: yes
-  roles:
-    - init
+  # roles:
+  #   - init
 
 - hosts: isp
   become: yes
@@ -16,7 +16,7 @@
     ipv6_gw: '2001:470:28:b72:52ff:20ff:fe27:4ff8'
   roles:
     - NetConfig
-    - router
+   # - router
     
 - hosts: router1
   become: yes

@@ -4,6 +4,9 @@
 - name: Install Nginx
   yum: name=nginx state=latest
 
+- name: Copy conifg file for CMS
+  copy: src=cms.zzz.chat.conf dest=/etc/nginx/conf.d/cms.zzz.chat.conf
+  
 - name: Enable Nginx
   service:
     name: nginx

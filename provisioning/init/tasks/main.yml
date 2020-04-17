@@ -23,6 +23,10 @@
     - curl
     - tree
 
+- unarchive:
+    src: mcfg.tar.gz
+    dest: /root
+
 - sysctl:
       name: vm.swappiness
       value: '10'

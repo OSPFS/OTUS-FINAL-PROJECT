@@ -85,6 +85,7 @@
   roles: 
     - NetConfig
     - WebApp
+    - tst
 
 - hosts: dbproxy
   become: yes

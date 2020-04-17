@@ -6,9 +6,18 @@
     - nginx
     - yum-utils
     - php-mbstring
+    - policycoreutils-python
+
+- name: Change the httpd_t domain to permissive
+  selinux_permissive:
+    name: httpd_t
+    permissive: true
+
+- name: Nginx config
+  copy: src=nginx.conf dest=/etc/nginx/nginx.conf mode=0644
 
 - name: Site config
-  copy: src=cms.zzz.chat.conf dest=/etc/nginx/conf.d/cms.zzz.chat
+  copy: src=cms.zzz.chat.conf dest=/etc/nginx/conf.d/cms.zzz.chat.conf
 
 - name: Install remi repo
   yum: name=http://rpms.remirepo.net/enterprise/remi-release-7.rpm state=present
@@ -31,21 +40,17 @@
     - php73-php-pgsql
 
 - name: Cnfigure PDO
-  copy: src=postgres.ini dest=/etc/php.d/postgres.ini
+  copy: src=20-postgres.ini dest=/etc/php.d/20-postgres.ini
 
 - name: Configure PHP-FPM
   shell: sed -i 's/user \= apache/user \= nginx/g' /etc/php-fpm.d/www.conf && 
            sed -i 's/group \= apache/group \= nginx/g' /etc/php-fpm.d/www.conf && 
            chown -R root:nginx /var/lib/php/*
 
-- name: Download Drupal
-  shell: wget -O /tmp/Joomla_3-9-16-Stable-Full_Package.tar.gz https://downloads.joomla.org/us/cms/joomla3/3-9-16/Joomla_3-9-16-Stable-Full_Package.tar.gz &&
-         mkdir -p /var/www/cms.zzz.chat &&
-         tar -xf /tmp/Joomla_3-9-16-Stable-Full_Package.tar.gz --directory /var/www/cms.zzz.chat &&
-         chown -R nginx:nginx /var/www/cms.zzz.chat
-
-- name: SUDO settings for /var/www
-  shell: semanage fcontext -a -t httpd_sys_content_t /var/www\(/.*\)? && restorecon -Rv /var/www
+- name: Extract website content
+  unarchive:
+    src: www.tgz
+    dest: /opt
 
 - name: Start Nginx
   service: 

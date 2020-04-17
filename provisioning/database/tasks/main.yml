@@ -12,36 +12,46 @@
     - postgresql96
     - postgresql96-server
     - postgresql96-contrib 
-    - postgresql96-libs
     - python-psycopg2    
+    - python-ipaddress
+  notify: InitDB
 
-- name: InitDB
-  command: /usr/pgsql-9.6/bin/postgresql96-setup initdb
 
-- name: Allow connect from localnet
-  lineinfile:
-    path: /var/lib/pgsql/9.6/data/pg_hba.conf
-    regexp: '# IPv4 local connections:'
-    insertafter: '# IPv4 local connections:'
-    line: host    all             all             10.10.10.0/24            md5
-    
-- name: Allow connect from localnet
-  lineinfile:
-    path: /var/lib/pgsql/9.6/data/pg_hba.conf
-    regexp: 'local   all             all                                     peer'
-    line: local   all             all                                     trust
 
-- name: Allow connect from localnet
-  lineinfile:
-    path: /var/lib/pgsql/9.6/data/pg_hba.conf
-    regexp: 'host    all             all             ::1/128                 ident'
-    line: host    all             all             ::1/128                 trust
+- name: Grant local connect
+  postgresql_pg_hba:
+    dest: /var/lib/pgsql/9.6/data/pg_hba.conf
+    contype: local
+    users: postgres
+    databases: all
+    method: trust
 
-- name: Allow connect from localnet
-  lineinfile:
-    path: /var/lib/pgsql/9.6/data/pg_hba.conf
-    regexp: 'host    all             all             127.0.0.1/32            ident'
-    line: host    all             all             127.0.0.1/32            trust
+- name: Grant user from network 10.10.10.0/24
+  postgresql_pg_hba:
+    dest: /var/lib/pgsql/9.6/data/pg_hba.conf
+    contype: host
+    users: all
+    source: 10.10.10.0/24
+    databases: all
+    method: md5
+
+- name: Grant user from network 127.0.0.1
+  postgresql_pg_hba:
+    dest: /var/lib/pgsql/9.6/data/pg_hba.conf
+    contype: host
+    users: all
+    source: 127.0.0.1/32
+    databases: all
+    method: trust
+
+- name: Grant user from network ::1/128
+  postgresql_pg_hba:
+    dest: /var/lib/pgsql/9.6/data/pg_hba.conf
+    contype: host
+    users: all
+    source: ::1/128
+    databases: all
+    method: trust
 
 - name: Listen all addresses
   lineinfile:
@@ -60,7 +70,7 @@
     enabled: yes
     state: restarted
 
-- name: Create a new database with name "dbjoom"  
+- name: Create a new database with name "cmsdb"  
   become: yes
   become_user: postgres
   postgresql_db:
@@ -78,4 +88,15 @@
     state: present
     priv: CONNECT
     login_user: postgres
+
+- name: Copy database
+  copy: src=cmsdb.gz dest=/tmp/cmsdb.gz
+
+- name: Restore database "cmsdb"  
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: cmsdb
+    target: /tmp/cmsdb.gz
+    state: restore
 

@@ -14,7 +14,6 @@
     - postgresql96-contrib 
     - python-psycopg2    
     - python-ipaddress
-  notify: InitDB
 
 - name: InitDB
   command: /usr/pgsql-9.6/bin/postgresql96-setup initdb
@@ -79,12 +78,31 @@
     state: present
     encoding: UTF-8
 
-- name: Create DB User
+- name: Create cmsdb DB User
   become: yes
   become_user: postgres
   postgresql_user:
     db: cmsdb
     name: cmska
+    password: LoG0peD
+    state: present
+    priv: CONNECT
+    login_user: postgres
+
+- name: Create a new database with name "zabbix"  
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: zabbix
+    state: present
+    encoding: UTF-8
+
+- name: Create zabbix DB User
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    db: zabbix
+    name: zabbix
     password: LoG0peD
     state: present
     priv: CONNECT

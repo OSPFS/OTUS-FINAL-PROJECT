@@ -1,0 +1,36 @@
+---
+# handlers file for Zabbix
+- hosts: zabbix
+  become: yes
+  tasks:
+  
+  - name:  Add Docker repository
+    command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+
+  # -  name: Add Docker repository
+  #    yum_repository:
+  #      name: docker
+  #      description: Docker repo
+  #      baseurl: https://download.docker.com/linux/centos/docker-ce.repo
+
+  - name: Install Docker
+    yum: name={{ item }} state=latest
+    loop:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+
+  - name: Start Docker
+    service:
+      name: docker
+      enabled: yes
+      state: started
+
+  - name: Install Zabbix stuff
+    shell: curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose &&
+           chmod +x /usr/local/bin/docker-compose && ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose && 
+           wget https://github.com/zabbix/zabbix-docker/blob/4.4/docker-compose_v3_centos_pgsql_latest.yaml -O /opt/zabbix.yaml
+
+
+
+

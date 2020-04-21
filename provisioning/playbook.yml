@@ -2,8 +2,8 @@
 
 - hosts: all
   become: yes
-  # roles:
-  #   - init
+  roles:
+      - init
 
 - hosts: isp
   become: yes
@@ -12,11 +12,22 @@
     ipv4_eth2: '10.10.1.1'
     ipv6_eth1: '2001:470:28:b72::cafe'
     ipv6_eth2: '2600:70ff:b0ea:cafe::1'
-    ipv4_gw: '10.0.1.1'
-    ipv6_gw: '2001:470:28:b72:52ff:20ff:fe27:4ff8'
+    ipv4_gw: '10.0.1.2'
+    ipv6_gw: '2001:470:28:b72::1'
   roles:
     - NetConfig
-   # - router
+    - router
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+      zabbix_host_groups: 
+                     - Linux Servers
+      zabbix_link_templates:
+                     - Template OS Linux by Zabbix agent
+
     
 - hosts: router1
   become: yes
@@ -33,6 +44,17 @@
   roles:
     - NetConfig
     - router
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+      zabbix_host_groups: 
+                     - Linux Servers
+      zabbix_link_templates:
+                     - Template OS Linux by Zabbix agent
+
 
 - hosts: router2
   become: yes
@@ -49,6 +71,16 @@
   roles:
     - NetConfig
     - router
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+      zabbix_host_groups: 
+                     - Linux Servers
+      zabbix_link_templates:
+                     - Template OS Linux by Zabbix agent
 
 - hosts: balancer
   become: yes
@@ -61,6 +93,17 @@
   roles: 
     - NetConfig
     - balancer
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+      zabbix_host_groups: 
+                     - Linux Servers
+      zabbix_link_templates:
+                     - Template OS Linux by Zabbix agent
+                     - Template App Nginx by Zabbix agent
   
 - hosts: webapp1
   become: yes
@@ -73,6 +116,17 @@
   roles:
     - NetConfig
     - WebApp
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+      zabbix_host_groups: 
+                     - Linux Servers
+      zabbix_link_templates:
+                     - Template OS Linux by Zabbix agent
+                     - Template App Nginx by Zabbix agent
 
 - hosts: webapp2
   become: yes
@@ -85,7 +139,28 @@
   roles: 
     - NetConfig
     - WebApp
-    - tst
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+      zabbix_host_groups: 
+                     - Linux Servers
+      zabbix_link_templates:
+                     - Template OS Linux by Zabbix agent
+                     - Template App Nginx by Zabbix agent
+- hosts: webapp3
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.53'
+    ipv6_eth1: '2600:70ff:b0ea:1::53'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
+  
+  roles: 
+    - NetConfig
+    - WebApp
 
 - hosts: dbproxy
   become: yes
@@ -96,7 +171,9 @@
     ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles: 
-    - NetConfig
+    #- NetConfig
+    - Dbproxy
+
 
 - hosts: db1
   become: yes
@@ -107,8 +184,19 @@
     ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles: 
-    - NetConfig
-    - Database
+    #- NetConfig
+    #- Database
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+      zabbix_host_groups: 
+                     - Linux Servers
+      zabbix_link_templates:
+                     - Template OS Linux by Zabbix agent
+                     - Template DB PostgreSQL
 
 - hosts: db2
   become: yes
@@ -133,3 +221,45 @@
   roles: 
     - NetConfig
     - Database
+
+- hosts: zabbix
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.17'
+    ipv6_eth1: '2600:70ff:b0ea:1::17'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
+  
+  roles: 
+    #- NetConfig
+    - { role: dj-wasabi.zabbix-server, 
+              zabbix_server_name: zabbix,
+              zabbix_selinux: true,
+              zabbix_server_database: pgsql,
+              zabbix_server_database_long: postgresql,
+              zabbix_server_dbhost: 10.10.10.14,
+              zabbix_server_dbname: zabbix,
+              zabbix_server_dbuser: zabbix,
+              zabbix_server_dbpassword: LoG0peD,
+              zabbix_database_creation: false }
+    - { role: dj-wasabi.zabbix-web,                
+              zabbix_server_database: pgsql,
+              zabbix_server_database_long: postgresql,
+              zabbix_server_dbhost: 10.10.10.14,
+              zabbix_server_dbname: zabbix,
+              zabbix_server_dbuser: zabbix,
+              zabbix_server_dbpassword: LoG0peD,
+              zabbix_timezone: Europe/Moscow,
+              zabbix_vhost: false }
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+      zabbix_host_groups: 
+                     - Linux Servers
+      zabbix_link_templates:
+                     - Template OS Linux by Zabbix agent
+                     - Template App Apache by Zabbix agent
+                     - Template App Zabbix Server

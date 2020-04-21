@@ -16,6 +16,9 @@
 - name: Nginx config
   copy: src=nginx.conf dest=/etc/nginx/nginx.conf mode=0644
 
+- name: Copy default config
+  copy: src=default.conf dest=/etc/nginx/conf.d/default.conf
+
 - name: Site config
   copy: src=cms.zzz.chat.conf dest=/etc/nginx/conf.d/cms.zzz.chat.conf
 

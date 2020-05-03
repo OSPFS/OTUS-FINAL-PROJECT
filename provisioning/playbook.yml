@@ -3,7 +3,7 @@
 - hosts: all
   become: yes
   roles:
-      - init
+       - init
 
 - hosts: isp
   become: yes
@@ -145,35 +145,6 @@
       zabbix_create_host: present
       zabbix_agent_allowroot: 1
       zabbix_selinux: true
-      zabbix_host_groups: 
-                     - Linux Servers
-      zabbix_link_templates:
-                     - Template OS Linux by Zabbix agent
-                     - Template App Nginx by Zabbix agent
-- hosts: webapp3
-  become: yes
-  vars:
-    ipv4_eth1: '10.10.10.53'
-    ipv6_eth1: '2600:70ff:b0ea:1::53'
-    ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b0b'
-  
-  roles: 
-    - NetConfig
-    - WebApp
-
-- hosts: dbproxy
-  become: yes
-  vars:
-    ipv4_eth1: '10.10.10.13'
-    ipv6_eth1: '2600:70ff:b0ea:1::13'
-    ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b0b'
-  
-  roles: 
-    #- NetConfig
-    - Dbproxy
-
 
 - hosts: db1
   become: yes
@@ -184,19 +155,15 @@
     ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles: 
-    #- NetConfig
-    #- Database
+    - NetConfig
     - role: dj-wasabi.zabbix-agent
       zabbix_agent_server: 10.10.10.17
       zabbix_agent_serveractive: 10.10.10.17
       zabbix_create_host: present
       zabbix_agent_allowroot: 1
       zabbix_selinux: true
-      zabbix_host_groups: 
-                     - Linux Servers
-      zabbix_link_templates:
-                     - Template OS Linux by Zabbix agent
-                     - Template DB PostgreSQL
+    - Patroni
+
 
 - hosts: db2
   become: yes
@@ -208,7 +175,13 @@
   
   roles: 
     - NetConfig
-    - Database
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+    - Patroni
 
 - hosts: db3
   become: yes
@@ -220,7 +193,41 @@
   
   roles: 
     - NetConfig
-    - Database
+    -  role: dj-wasabi.zabbix-agent
+       zabbix_agent_server: 10.10.10.17
+       zabbix_agent_serveractive: 10.10.10.17
+       zabbix_create_host: present
+       zabbix_agent_allowroot: 1
+       zabbix_selinux: true
+       zabbix_host_groups: 
+                     - Linux Servers
+       zabbix_link_templates:
+                     - Template OS Linux by Zabbix agent
+    - Patroni
+    - InstallDB   
+    
+- hosts: dbproxy
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.13'
+    ipv6_eth1: '2600:70ff:b0ea:1::13'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
+  
+  roles: 
+    - NetConfig
+#    - Dbproxy
+    - Consul
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+    - Haproxy
+    - InstallDB
+
+
 
 - hosts: zabbix
   become: yes
@@ -231,13 +238,13 @@
     ipv6_gw: '2600:70ff:b0ea:1::b0b'
   
   roles: 
-    #- NetConfig
+    - NetConfig
     - { role: dj-wasabi.zabbix-server, 
               zabbix_server_name: zabbix,
               zabbix_selinux: true,
               zabbix_server_database: pgsql,
               zabbix_server_database_long: postgresql,
-              zabbix_server_dbhost: 10.10.10.14,
+              zabbix_server_dbhost: 10.10.10.13,
               zabbix_server_dbname: zabbix,
               zabbix_server_dbuser: zabbix,
               zabbix_server_dbpassword: LoG0peD,
@@ -245,7 +252,7 @@
     - { role: dj-wasabi.zabbix-web,                
               zabbix_server_database: pgsql,
               zabbix_server_database_long: postgresql,
-              zabbix_server_dbhost: 10.10.10.14,
+              zabbix_server_dbhost: 10.10.10.13,
               zabbix_server_dbname: zabbix,
               zabbix_server_dbuser: zabbix,
               zabbix_server_dbpassword: LoG0peD,
@@ -263,3 +270,4 @@
                      - Template OS Linux by Zabbix agent
                      - Template App Apache by Zabbix agent
                      - Template App Zabbix Server
+

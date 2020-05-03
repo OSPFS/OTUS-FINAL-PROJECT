@@ -1,0 +1,27 @@
+---
+# tasks file for Dbproxy
+
+- name: Install Postgre REPO
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: present
+
+- name: Install PgBouncer
+  yum:
+    name: pgbouncer
+    state: latest
+
+- name: Copy configs
+  copy: src=pgbouncer.ini dest=/etc/pgbouncer/pgbouncer.ini
+
+- name: Copy configs
+  copy: src=userlist.txt dest=/etc/pgbouncer/userlist.txt
+
+- name: Start pgbouncer
+  service:
+    name: pgbouncer
+    enabled: yes
+    status: started
+
+
+

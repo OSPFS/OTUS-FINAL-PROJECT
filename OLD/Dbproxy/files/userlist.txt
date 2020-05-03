@@ -1,0 +1,3 @@
+"cmska" "LoG0peD"
+"zabbix" "LoG0peD"
+"eax" "P@$$W0RD"

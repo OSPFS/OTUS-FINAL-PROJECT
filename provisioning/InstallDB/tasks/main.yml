@@ -1,20 +1,19 @@
 ---
 # tasks file for Database
+- name: Install postgresql-tools
+  yum:
+    name: postgresql
+    state: latest
 
-- name: Wois master?
-  shell: curl -s  http://10.10.10.15:8008/cluster | jq '.members []|select(.role|contains("leader"))'|grep host|cut -d '"' -f4
-  register: master_node
-
-- name: Wois master?
-  shell: curl -s  http://10.10.10.15:8008/cluster | jq '.members []|select(.role|contains("leader"))'|grep name|cut -d '"' -f4
-  register: master_name
-
-- debug:
-    msg: "Master is: {{ master_node.stdout }}"
+- name: Install pip
+  pip: name={{ item }} state=latest
+  loop:
+    # - psycopg2
+    - psycopg2-binary
 
 - name: Create a new database with name "cmsdb"  
   postgresql_db:
-    login_host: "{{ master_node.stdout }}"
+    login_host: "{{ ipv4_eth1 }}"
     login_user: postgres
     login_password: P@ssw0rd
     name: cmsdb
@@ -23,7 +22,7 @@
 
 - name: Create cmsdb DB User
   postgresql_user:
-    login_host: "{{ master_node.stdout }}"
+    login_host: "{{ ipv4_eth1 }}"
     login_user: postgres
     login_password: P@ssw0rd
     db: cmsdb
@@ -35,7 +34,7 @@
 - name: Create a new database with name "zabbix"  
 
   postgresql_db:
-    login_host: "{{ master_node.stdout }}"
+    login_host: "{{ ipv4_eth1 }}"
     login_user: postgres
     login_password: P@ssw0rd
     name: zabbix
@@ -45,7 +44,7 @@
 - name: Create zabbix DB User
 
   postgresql_user:
-    login_host: "{{ master_node.stdout }}"
+    login_host: "{{ ipv4_eth1 }}"
     login_user: postgres
     login_password: P@ssw0rd  
     db: zabbix
@@ -54,23 +53,15 @@
     state: present
     priv: CONNECT
 
-- include: copydb.yml
-
-# - name: DBackup Sync
-#   synchronize: 
-#     src: cmsdb.gz
-#     dest: /tmp
-#   delegate_to: "{{ master_node.stdout }}"
-
-# - name: DBackup Sync
-#   synchronize: 
-#     src: zabbix.bkp
-#     dest: /tmp
-#   delegate_to: "{{ master_node.stdout }}"
-
+- name: Copy database
+  copy: src=cmsdb.gz dest=/tmp
+      
+- name: Copy database
+  copy: src=zabbix.sql dest=/tmp
+      
 - name: Restore database "cmsdb"
   postgresql_db:
-    login_host: "{{ master_node.stdout }}"
+    login_host: "{{ ipv4_eth1 }}"
     login_user: postgres
     login_password: P@ssw0rd  
     name: cmsdb
@@ -79,9 +70,9 @@
 
 - name: Restore database "zabbix"  
   postgresql_db:
-    login_host: "{{ master_node.stdout }}"
+    login_host: "{{ ipv4_eth1 }}"
     login_user: postgres
     login_password: P@ssw0rd  
     name: zabbix
-    target: /tmp/zabbix.bkp
+    target: /tmp/zabbix.sql
     state: restore

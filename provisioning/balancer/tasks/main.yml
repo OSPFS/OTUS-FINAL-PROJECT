@@ -1,6 +1,16 @@
 ---
 # tasks file for balancer
 
+- name: Install Filebeat
+  yum:
+    name: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.6.2-x86_64.rpm
+    state: present
+
+- name: Copy filebeat config
+  copy: src=filebeat.yml dest=/etc/filebeat/filebeat.yml
+
+- command: mv /etc/filebeat/modules.d/nginx.yml.disabled /etc/filebeat/modules.d/nginx.yml
+
 - name: Install Nginx
   yum: name=nginx state=latest
 
@@ -13,8 +23,23 @@
 - name: Copy conifg file for CMS
   copy: src=cms.zzz.chat.conf dest=/etc/nginx/conf.d/cms.zzz.chat.conf
 
+- name: Copy conifg file for Zabbix
+  copy: src=cms.zzz.chat.conf dest=/etc/nginx/conf.d/zabbix.conf
+
+- name: Extract crt
+  unarchive:
+    src: conf.tgz
+    dest: /etc/nginx
+
 - name: Enable Nginx
   service:
     name: nginx
     enabled: yes
     state: restarted
+
+- name: Enable Filebeat
+  service:
+    name: filebeat
+    enabled: yes
+    state: started
+    

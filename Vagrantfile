@@ -51,14 +51,6 @@ MACHINES = {
                      {ip: '10.10.10.12', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
     },    
-     :dbproxy => {
-           :box_name => "centos/7",
-           :cpus => 2,
-           :memory => 1024,
-           :net => [
-                      {ip: '10.10.10.13', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
-                   ]
-     },
     :db1 => {
           :box_name => "centos/7",
           :cpus => 2,
@@ -83,12 +75,28 @@ MACHINES = {
                      {ip: '10.10.10.16', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
     },
+    :dbproxy => {
+      :box_name => "centos/7",
+      :cpus => 2,
+      :memory => 1024,
+      :net => [
+                 {ip: '10.10.10.13', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
+              ]
+    },
     :zabbix => {
           :box_name => "centos/7",
           :cpus => 2,
           :memory => 1024,
           :net => [
                      {ip: '10.10.10.17', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
+                  ]
+    },
+    :elk => {
+          :box_name => "centos/7",
+          :cpus => 2,
+          :memory => 2048,
+          :net => [
+                     {ip: '10.10.10.18', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
     },
 }
@@ -123,6 +131,7 @@ MACHINES = {
     
     config.vm.provision "ansible" do |ansible|
       ansible.playbook = "provisioning/playbook.yml"
+      #ansible.playbook = "provisioning/elk.yml"
       ansible.compatibility_mode = "auto"
       ansible.become = "true"
     end

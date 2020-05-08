@@ -8,8 +8,11 @@
 # - name: Configure routers
 #   include: routers.yml
 
-# - name: Configure web-servers
-#   include: web.yml
+- name: Configure balancer
+  include: balancer.yml
+
+- name: Configure web-servers
+  include: web.yml
 
 # - name: Configure Database
 #   include: db.yml

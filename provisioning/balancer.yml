@@ -1,0 +1,20 @@
+
+- hosts: balancer
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.10'
+    ipv6_eth1: '2600:70ff:b0ea:1::10'
+    ipv4_gw: '10.10.10.1'
+    ipv6_gw: '2600:70ff:b0ea:1::b0b'
+  
+  roles: 
+    - NetConfig
+    - balancer
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+
+  

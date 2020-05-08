@@ -18,6 +18,9 @@
     
     - name: Copy Kibana config
       copy: src=kibana.yml dest=/etc/kibana/kibana.yml
+
+    - name: Copy Elastic config
+      copy: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
     
     - name: Copy Logstash config
       copy: src=logstngx.conf dest=/etc/logstash/conf.d/logstngx.conf

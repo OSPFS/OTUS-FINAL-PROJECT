@@ -99,6 +99,14 @@ MACHINES = {
                      {ip: '10.10.10.18', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
     },
+    :bckp => {
+      :box_name => "centos/7",
+      :cpus => 2,
+      :memory => 512,
+      :net => [
+                 {ip: '10.10.10.19', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
+              ]
+    },
 }
   
   Vagrant.configure("2") do |config|
@@ -130,8 +138,8 @@ MACHINES = {
     end
     
     config.vm.provision "ansible" do |ansible|
-      ansible.playbook = "provisioning/playbook.yml"
-      #ansible.playbook = "provisioning/elk.yml"
+      #ansible.playbook = "provisioning/playbook.yml"
+      ansible.playbook = "provisioning/bckp.yml"
       ansible.compatibility_mode = "auto"
       ansible.become = "true"
     end

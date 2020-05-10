@@ -5,20 +5,23 @@
   roles:
     - init
 
-# - name: Configure routers
-#   include: routers.yml
+- name: Configure routers
+  include: routers.yml
 
-- name: Configure balancer
-  include: balancer.yml
+- name: Configure Backup Server
+  include: bckp.yml 
+
+- name: Configure Database
+  include: db.yml
+
+- name: Install DBProxy
+  include: dbproxy.yml 
+
+- name: Configure Zabbix-Server
+  include: zabbix.yml 
 
 - name: Configure web-servers
   include: web.yml
-
-# - name: Configure Database
-#   include: db.yml
-
-# - name: Configure Zabbix-Server
-#   include: zabbix.yml 
 
 - name: Configure ELK
   include: elk.yml 

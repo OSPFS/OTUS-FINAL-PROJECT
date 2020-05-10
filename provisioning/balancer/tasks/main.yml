@@ -26,6 +26,9 @@
 - name: Copy conifg file for Zabbix
   copy: src=zabbix.conf dest=/etc/nginx/conf.d/zabbix.conf
 
+- name: Copy conifg file for Kibana
+  copy: src=kibana.conf dest=/etc/nginx/conf.d/kibana.conf
+
 - name: Extract crt
   unarchive:
     src: conf.tgz

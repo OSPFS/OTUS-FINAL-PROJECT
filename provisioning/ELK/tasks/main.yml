@@ -14,7 +14,8 @@
         - java-11-openjdk-devel
         - elasticsearch
         - kibana
-        - logstash
+        - borgbackup
+        # - logstash
     
     - name: Copy Kibana config
       copy: src=kibana.yml dest=/etc/kibana/kibana.yml
@@ -22,23 +23,13 @@
     - name: Copy Elastic config
       copy: src=elasticsearch.yml dest=/etc/elasticsearch/elasticsearch.yml
     
-    - name: Copy Logstash config
-      copy: src=logstngx.conf dest=/etc/logstash/conf.d/logstngx.conf
+    # - name: Copy Logstash config
+    #   copy: src=logstngx.conf dest=/etc/logstash/conf.d/logstngx.conf
 
-    - name: Start Elastic
-      service: 
-        name: elasticsearch
-        enabled: yes
-        state: started
 
-    - name: Start Kibana
-      service: 
-        name: kibana
-        enabled: yes
-        state: started
 
-    - name: Start Logstash
-      service: 
-        name: logstash
-        enabled: yes
-        state: started
+    # - name: Start Logstash
+    #   service: 
+    #     name: logstash
+    #     enabled: yes
+    #     state: started

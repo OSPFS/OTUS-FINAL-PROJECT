@@ -9,19 +9,9 @@ hostname {{ ansible_hostname }}
 !
 router bgp 65500
  bgp router-id {{ ipv4_eth1 }}
+ redistribute connected
  neighbor 10.10.1.1 remote-as 65000
- neighbor 2600:70ff:b0ea:cafe::1 remote-as 65000
- neighbor 2600:70ff:b0ea:cafe::1 next-hop-self
- !
- address-family ipv4 unicast
-  network 10.10.10.0/24
-  neighbor 10.10.1.1 next-hop-self
- exit-address-family
 !
- address-family ipv6
-  network 2600:70ff:b0ea:1::/64
-  neighbor 2600:70ff:b0ea:cafe::1 activate
- exit-address-family
 !
 line vty
 !

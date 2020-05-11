@@ -27,18 +27,26 @@ MACHINES = {
                      {ip: '10.10.10.3', adapter: 3, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},
                   ]
     },
-    :balancer => {
+    :balancer1 => {
           :box_name => "centos/7",
           :cpus => 2,
-          :memory => 512,
+          :memory => 256,
           :net => [
-                     {ip: '10.10.10.10', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
+                     {ip: '10.10.10.8', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
+    },
+    :balancer2 => {
+      :box_name => "centos/7",
+      :cpus => 2,
+      :memory => 256,
+      :net => [
+                 {ip: '10.10.10.9', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
+              ]
     },
     :webapp1 => {
           :box_name => "centos/7",
           :cpus => 2,
-          :memory => 512,
+          :memory => 300,
           :net => [
                      {ip: '10.10.10.11', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
@@ -46,7 +54,7 @@ MACHINES = {
     :webapp2 => {
           :box_name => "centos/7",
           :cpus => 2,
-          :memory => 512,
+          :memory => 300,
           :net => [
                      {ip: '10.10.10.12', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
@@ -54,7 +62,7 @@ MACHINES = {
     :db1 => {
           :box_name => "centos/7",
           :cpus => 2,
-          :memory => 1024,
+          :memory => 512,
           :net => [
                      {ip: '10.10.10.14', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
@@ -62,7 +70,7 @@ MACHINES = {
     :db2 => {
           :box_name => "centos/7",
           :cpus => 2,
-          :memory => 1024,
+          :memory => 512,
           :net => [
                      {ip: '10.10.10.15', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
@@ -70,7 +78,7 @@ MACHINES = {
     :db3 => {
           :box_name => "centos/7",
           :cpus => 2,
-          :memory => 1024,
+          :memory => 512,
           :net => [
                      {ip: '10.10.10.16', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
@@ -78,7 +86,7 @@ MACHINES = {
     :dbproxy => {
       :box_name => "centos/7",
       :cpus => 2,
-      :memory => 1024,
+      :memory => 256,
       :net => [
                  {ip: '10.10.10.13', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
               ]
@@ -86,7 +94,7 @@ MACHINES = {
     :zabbix => {
           :box_name => "centos/7",
           :cpus => 2,
-          :memory => 1024,
+          :memory => 512,
           :net => [
                      {ip: '10.10.10.17', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
@@ -94,7 +102,7 @@ MACHINES = {
     :elk => {
           :box_name => "centos/7",
           :cpus => 2,
-          :memory => 2048,
+          :memory => 2560,
           :net => [
                      {ip: '10.10.10.18', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
@@ -102,7 +110,7 @@ MACHINES = {
     :bckp => {
       :box_name => "centos/7",
       :cpus => 2,
-      :memory => 512,
+      :memory => 300,
       :net => [
                  {ip: '10.10.10.19', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
               ]
@@ -114,7 +122,8 @@ MACHINES = {
     MACHINES.each do |boxname, boxconfig|
       
       config.vm.define boxname do |box|
-       
+
+          box.vm.synced_folder '.', '/vagrant', disabled: true
           box.vm.box = boxconfig[:box_name]
           box.vm.host_name = boxname.to_s
 
@@ -139,7 +148,7 @@ MACHINES = {
     
     config.vm.provision "ansible" do |ansible|
       #ansible.playbook = "provisioning/playbook.yml"
-      ansible.playbook = "provisioning/bckp.yml"
+      ansible.playbook = "provisioning/elk.yml"
       ansible.compatibility_mode = "auto"
       ansible.become = "true"
     end

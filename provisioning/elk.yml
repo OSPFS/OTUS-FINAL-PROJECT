@@ -1,23 +1,40 @@
 - hosts: elk
   become: yes
   vars:
-    ipv4_eth1: '10.10.10.18'
-    ipv6_eth1: '2600:70ff:b0ea:1::18'
+    ipv4_eth1: '10.10.10.18'    
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b0b'
+    
   
-  roles: 
-    - NetConfig
-    - ELK
-    - role: dj-wasabi.zabbix-agent
-      zabbix_agent_server: 10.10.10.17
-      zabbix_agent_serveractive: 10.10.10.17
-      zabbix_create_host: present
-      zabbix_agent_allowroot: 1
-      zabbix_selinux: true
+  # roles: 
+  #   - NetConfig
+  #   - ELK
+  #   - role: dj-wasabi.zabbix-agent
+  #     zabbix_agent_server: 10.10.10.17
+  #     zabbix_agent_serveractive: 10.10.10.17
+  #     zabbix_create_host: present
+  #     zabbix_agent_allowroot: 1
+  #     zabbix_selinux: true
 
+  tasks:
+    - name: Copy ssh key to backup server
+      import_tasks: rootssh.yml
 
-        
+    - name: Restore from backup
+      shell: |
+        cd /
+        yes | borg extract ssh://borg@10.10.10.19/srv/borg_backup/elk::$(borg list ssh://borg@10.10.10.19/srv/borg_backup/elk | tail -1 | cut -d' ' -f1) var etc/elasticsearch     
+
+    - name: Start Elastic
+      service: 
+        name: elasticsearch
+        enabled: yes
+        state: started
+
+    - name: Start Kibana
+      service: 
+        name: kibana
+        enabled: yes
+        state: started
 
     
    

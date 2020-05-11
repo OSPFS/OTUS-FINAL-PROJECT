@@ -2,9 +2,9 @@
   become: yes
   vars:
     ipv4_eth1: '10.10.10.13'
-    ipv6_eth1: '2600:70ff:b0ea:1::13'
+    
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b0b'
+    
   
   roles: 
     - NetConfig

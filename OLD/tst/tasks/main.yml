@@ -1,7 +1,0 @@
----
-# tasks file for init
-
-- unarchive:
-    src: mcfg.tar.gz
-    dest: /root
-    

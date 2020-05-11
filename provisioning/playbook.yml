@@ -6,22 +6,25 @@
     - init
 
 - name: Configure routers
-  include: routers.yml
+  import_playbook: routers.yml
 
 - name: Configure Backup Server
-  include: bckp.yml 
+  import_playbook: bckp.yml 
 
 - name: Configure Database
-  include: db.yml
+  import_playbook: db.yml
 
 - name: Install DBProxy
-  include: dbproxy.yml 
+  import_playbook: dbproxy.yml
 
 - name: Configure Zabbix-Server
-  include: zabbix.yml 
-
-- name: Configure web-servers
-  include: web.yml
+  import_playbook: zabbix.yml 
 
 - name: Configure ELK
-  include: elk.yml 
+  import_playbook: elk.yml 
+
+- name: Configure web-balancer
+  import_playbook: balancer.yml
+
+- name: Configure web-servers
+  import_playbook: web.yml

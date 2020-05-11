@@ -57,7 +57,7 @@
   copy: src=cmsdb.gz dest=/tmp
       
 - name: Copy database
-  copy: src=zabbix.sql dest=/tmp
+  copy: src=zabbix.gz dest=/tmp
       
 - name: Restore database "cmsdb"
   postgresql_db:
@@ -74,5 +74,5 @@
     login_user: postgres
     login_password: P@ssw0rd  
     name: zabbix
-    target: /tmp/zabbix.sql
+    target: /tmp/zabbix.gz
     state: restore

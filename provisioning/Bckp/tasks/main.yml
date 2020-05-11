@@ -1,38 +1,47 @@
 ---
 # tasks file for Bckp
-# - name: Install Postgre REPO
-#   yum:
-#     name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-#     state: present
+- name: Install Postgre REPO
+  yum:
+    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+    state: present
 
-# - name: Install Backup Soft
-#   yum: name={{ item }} state=latest
-#   loop:
-#     # - https://repo.postgrespro.ru/pg_probackup/keys/pg_probackup-repo-centos.noarch.rpm
-#     # - pg_probackup-11
-#     # - pg_probackup-11-debuginfo
-#     # - borgbackup
-#     - postgresql11
+- name: Install Backup Soft
+  yum: name={{ item }} state=latest
+  loop:
+    - https://repo.postgrespro.ru/pg_probackup/keys/pg_probackup-repo-centos.noarch.rpm
+    - pg_probackup-11
+    - pg_probackup-11-debuginfo
+    - postgresql11
+    - borgbackup
 
-# - name: Add user postgres
-#   user: 
-#     name: postgres
-#     password: P@S$w0rD
-#     generate_ssh_key: yes
-#     ssh_key_bits: 2048
-#     ssh_key_file: .ssh/id_rsa
+- name: Add user postgres
+  user: 
+    name: postgres
+    password: P@S$w0rD
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
 
-# - name: Fetch ssh key
-#   slurp:
-#     src: /home/postgres/.ssh/id_rsa.pub
-#   register: idrsa
+- name: Add user borg
+  user: 
+    name: borg
+    password: borgpass
+    generate_ssh_key: yes
+    ssh_key_bits: 2048
+    ssh_key_file: .ssh/id_rsa
+   
 
-# - name: Put ssh key to db1
-#   authorized_key:
-#     user: postgres
-#     state: present
-#     key: "{{ idrsa['content'] | b64decode }}"
-#   delegate_to: db1
+- name: Fetch ssh key
+  slurp:
+    src: /home/postgres/.ssh/id_rsa.pub
+  register: idrsa
+
+- name: Put ssh key to db1
+  authorized_key:
+    user: postgres
+    state: present
+    key: "{{ idrsa['content'] | b64decode }}"
+  delegate_to: db1
 
 - name: Creates backup directory
   file:

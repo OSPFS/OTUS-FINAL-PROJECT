@@ -1,6 +1,20 @@
 ---
 # tasks file for balancer
 
+- name: Install and configure VRRP
+  block:
+    - name: Install keepkeepalived
+      yum: name=keepalived state=latest
+    
+    - name: Configure keepalived for routers
+      template: src=keepalived.j2 dest=/etc/keepalived/keepalived.conf mode=0666 owner=root
+    
+    - name: Enable VRRP
+      service:
+        name: keepalived
+        enabled: yes
+        state: started
+        
 - name: Install Filebeat
   yum:
     name: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.6.2-x86_64.rpm

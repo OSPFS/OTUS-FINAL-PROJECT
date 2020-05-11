@@ -1,10 +1,9 @@
 - hosts: db1
   become: yes
   vars:
-    ipv4_eth1: '10.10.10.14'
-    ipv6_eth1: '2600:70ff:b0ea:1::14'
+    ipv4_eth1: '10.10.10.14'    
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b0b'
+    
   
   roles: 
     - NetConfig
@@ -36,9 +35,9 @@
   become: yes
   vars:
     ipv4_eth1: '10.10.10.15'
-    ipv6_eth1: '2600:70ff:b0ea:1::15'
+    
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b0b'
+    
   
   roles: 
     - NetConfig
@@ -54,9 +53,9 @@
   become: yes
   vars:
     ipv4_eth1: '10.10.10.16'
-    ipv6_eth1: '2600:70ff:b0ea:1::16'
+    
     ipv4_gw: '10.10.10.1'
-    ipv6_gw: '2600:70ff:b0ea:1::b0b'
+    
   
   roles: 
     - NetConfig

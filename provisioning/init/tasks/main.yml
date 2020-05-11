@@ -1,11 +1,11 @@
 ---
 # tasks file for init
 
-- name: Disable yum fastestmirror plugin
-  lineinfile:
-    path: /etc/yum/pluginconf.d/fastestmirror.conf
-    regexp: '^enabled=1'
-    line: enabled=0
+# - name: Disable yum fastestmirror plugin
+#   lineinfile:
+#     path: /etc/yum/pluginconf.d/fastestmirror.conf
+#     regexp: '^enabled=1'
+#     line: enabled=0
   
 - name: Epel-release
   yum: name=epel-release state=latest
@@ -45,3 +45,11 @@
   selinux:
     policy: targeted
     state: permissive
+
+- name: Update configuration block in /etc/ssh/ssh_config
+  blockinfile:
+    path: /etc/ssh/ssh_config
+    block: |
+      Host 10.10.10.*
+        StrictHostKeyChecking no
+        UserKnownHostsFile=/dev/null

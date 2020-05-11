@@ -29,7 +29,7 @@
     reload: yes
 
 - name: Install Quagga and tcpdump
-  yum: name={{ item }} state=latest
+  yum: name={{ item }} state=present
   loop:
     - tcpdump
     - quagga
@@ -60,7 +60,7 @@
 - name: Install and configure VRRP
   block:
     - name: Install keepkeepalived
-      yum: name=keepalived state=latest
+      yum: name=keepalived state=present
     
     - name: Configure keepalived for routers
       template: src=keepalived.j2 dest=/etc/keepalived/keepalived.conf mode=0666 owner=root
@@ -69,7 +69,6 @@
       service:
         name: keepalived
         enabled: yes
-        state: started
-  
+        state: started  
   when: (ansible_facts['hostname'] != "isp")
     

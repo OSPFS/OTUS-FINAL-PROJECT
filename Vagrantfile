@@ -86,7 +86,7 @@ MACHINES = {
     :dbproxy => {
       :box_name => "centos/7",
       :cpus => 2,
-      :memory => 256,
+      :memory => 512,
       :net => [
                  {ip: '10.10.10.13', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
               ]
@@ -147,8 +147,8 @@ MACHINES = {
     end
     
     config.vm.provision "ansible" do |ansible|
-      #ansible.playbook = "provisioning/playbook.yml"
-      ansible.playbook = "provisioning/elk.yml"
+      ansible.playbook = "provisioning/playbook.yml"
+      #ansible.playbook = "provisioning/elk.yml"
       ansible.compatibility_mode = "auto"
       ansible.become = "true"
     end

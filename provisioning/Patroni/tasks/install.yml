@@ -11,7 +11,7 @@
     state: present
 
 - name: Install PostgreSQL
-  yum: name={{ item }} state=latest
+  yum: name={{ item }} state=present
   loop:
     - postgresql11
     - postgresql11-server
@@ -20,14 +20,17 @@
 - name: Patroni | install | Install pip packages
   pip:
     name: "{{ pip_packages }}"
-    state: latest    
+    state: present    
   tags:
     - pip
+
+- name: Update stuptools
+  command: pip install --upgrade setuptools
 
 - name: Patroni | install | Install patroni
   pip:
     name: patroni
-    state: latest
+    state: present
     executable: pip
   tags:
     - pip-patroni

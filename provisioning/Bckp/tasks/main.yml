@@ -1,70 +1,43 @@
 ---
 # tasks file for Bckp
-- name: Install Postgre REPO
-  yum:
-    name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-    state: present
 
-- name: Install Backup Soft
-  yum: name={{ item }} state=latest
-  loop:
-    - https://repo.postgrespro.ru/pg_probackup/keys/pg_probackup-repo-centos.noarch.rpm
-    - pg_probackup-11
-    - pg_probackup-11-debuginfo
-    - postgresql11
-    - borgbackup
+- name: Install Borgbackup
+  yum: name=borgbackup state=present
 
-- name: Add user postgres
+- name: Add ssh-key to user root
   user: 
-    name: postgres
-    password: P@S$w0rD
+    name: root    
     generate_ssh_key: yes
     ssh_key_bits: 2048
     ssh_key_file: .ssh/id_rsa
-
-- name: Add user borg
-  user: 
-    name: borg
-    password: borgpass
-    generate_ssh_key: yes
-    ssh_key_bits: 2048
-    ssh_key_file: .ssh/id_rsa
-   
 
 - name: Fetch ssh key
   slurp:
-    src: /home/postgres/.ssh/id_rsa.pub
+    src: /root/.ssh/id_rsa.pub
   register: idrsa
 
-- name: Put ssh key to db1
+- name: Put ssh key to Backup Server
   authorized_key:
-    user: postgres
+    user: borg
     state: present
     key: "{{ idrsa['content'] | b64decode }}"
-  delegate_to: db1
+  delegate_to: bckp
 
-- name: Creates backup directory
-  file:
-    path: /srv/db_backup
-    state: directory
-    owner: postgres
-    group: postgres
-    mode: 0770
+- name: Put backup script
+  template: src=bbackup.j2 dest=/usr/local/bin/bbackup.sh mode=0777
 
-- name: Create .pgpass
-  lineinfile:
-    path: /home/postgres/.pgpass
-    line: '*:*:*:*:P@ssw0rd'
-    owner: postgres
-    group: postgres
-    mode: '0600'
+- name: Add Crontab backup task
+  blockinfile:
+    path: /etc/cron.d/bbackup
     create: yes
+    block: |
+      SHELL=/bin/bash
+      PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin
+      MAILTO=root
+      01 * * * * root bbackup.sh
+    owner: root
+    group: root
+    mode: '0644'
 
-- name: Make DB Backup
-  become_user: postgres
-  shell: |
-    ssh -o "StrictHostKeyChecking=no" 10.10.10.14 echo
-    pg_probackup-11 init -B /srv/db_backup/
-    pg_probackup-11 add-instance -B /srv/db_backup/ --instance 'db1' --remote-host=10.10.10.14 --remote-user=postgres -D /var/data/base
-    pg_probackup-11 backup -B /srv/db_backup/ --instance 'db1' -b FULL --stream --remote-host=10.10.10.14 --remote-user=postgres -D /var/data/base
-
+- name: Init Borg Backup
+  shell: borg init -e=none ssh://borg@10.10.10.19/srv/borg_backup/{{ ansible_hostname }} && /usr/local/bin/bbackup.sh

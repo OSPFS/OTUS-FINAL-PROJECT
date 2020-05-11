@@ -4,7 +4,7 @@
 - name: Install policycoreutils-python-utils
   yum: 
     pkg: policycoreutils-python
-    state: latest
+    state: present
 
 - name: "RedHat | Install basic repo file"
   yum_repository:

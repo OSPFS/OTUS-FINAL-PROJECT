@@ -27,7 +27,7 @@
               zabbix_timezone: Europe/Moscow,
               zabbix_vhost: false }
     - role: dj-wasabi.zabbix-agent
-      zabbix_agent_server: 127.0.0.1
+      zabbix_agent_server: '127.0.0.1, 10.10.10.17'
       zabbix_agent_serveractive: 10.10.10.17
       zabbix_create_host: present
       zabbix_agent_allowroot: 1

@@ -1,13 +1,12 @@
 ---
 # tasks file for WebApp
 - name: Install Nginx, yum-utils
-  yum: name={{ item }} state=latest
+  yum: name={{ item }} state=present
   loop:
     - nginx
     - yum-utils
     - php-mbstring
     - policycoreutils-python
-    - borgbackup
 
 - name: Change the httpd_t domain to permissive
   selinux_permissive:
@@ -30,7 +29,7 @@
   command: yum-config-manager --enable remi-php73
 
 - name: Install PHP stuff
-  yum: name={{ item }} state=latest
+  yum: name={{ item }} state=present
   loop:
     - php-fpm
     - php-cli

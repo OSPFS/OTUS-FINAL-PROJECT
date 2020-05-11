@@ -4,7 +4,7 @@
 - name: Install and configure VRRP
   block:
     - name: Install keepkeepalived
-      yum: name=keepalived state=latest
+      yum: name=keepalived state=present
     
     - name: Configure keepalived for routers
       template: src=keepalived.j2 dest=/etc/keepalived/keepalived.conf mode=0666 owner=root
@@ -26,7 +26,7 @@
 - command: mv /etc/filebeat/modules.d/nginx.yml.disabled /etc/filebeat/modules.d/nginx.yml
 
 - name: Install Nginx
-  yum: name=nginx state=latest
+  yum: name=nginx state=present
 
 - name: Nginx config
   copy: src=nginx.conf dest=/etc/nginx/nginx.conf mode=0644

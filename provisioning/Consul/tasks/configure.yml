@@ -10,5 +10,9 @@
     dest: /etc/consul.d/consul.json
     owner: consul
     group: consul
-  notify:
-    - start consul
+
+- name: start consul
+  systemd:
+    name: consul
+    enabled: true
+    state: started

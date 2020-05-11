@@ -14,30 +14,31 @@
       zabbix_agent_allowroot: 1
       zabbix_selinux: true
     - Patroni
-  tasks:
-    - name: Install pg_probackup
-      yum: name={{ item }} state=latest
-      loop:
-        - https://repo.postgrespro.ru/pg_probackup/keys/pg_probackup-repo-centos.noarch.rpm
-        - pg_probackup-11
-        - pg_probackup-11-debuginfo
-        - borgbackup
-    - name: Set password and Generate SSH key for user postgres
-      user:
-        name: postgres
-        password: P@S$w0rD
-        generate_ssh_key: yes
-        ssh_key_bits: 2048
-        ssh_key_file: .ssh/id_rsa
 
+
+- hosts: dbproxy
+  become: yes
+  vars:
+    ipv4_eth1: '10.10.10.13'    
+    ipv4_gw: '10.10.10.1'    
+  
+  roles: 
+    - NetConfig
+    - Consul
+    - role: dj-wasabi.zabbix-agent
+      zabbix_agent_server: 10.10.10.17
+      zabbix_agent_serveractive: 10.10.10.17
+      zabbix_create_host: present
+      zabbix_agent_allowroot: 1
+      zabbix_selinux: true
+    - Haproxy
+    - InstallDB
 
 - hosts: db2
   become: yes
   vars:
-    ipv4_eth1: '10.10.10.15'
-    
-    ipv4_gw: '10.10.10.1'
-    
+    ipv4_eth1: '10.10.10.15'    
+    ipv4_gw: '10.10.10.1'    
   
   roles: 
     - NetConfig
@@ -52,10 +53,8 @@
 - hosts: db3
   become: yes
   vars:
-    ipv4_eth1: '10.10.10.16'
-    
-    ipv4_gw: '10.10.10.1'
-    
+    ipv4_eth1: '10.10.10.16'    
+    ipv4_gw: '10.10.10.1'    
   
   roles: 
     - NetConfig
@@ -66,7 +65,3 @@
        zabbix_agent_allowroot: 1
        zabbix_selinux: true
     - Patroni
-  
-
-
-

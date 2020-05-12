@@ -67,3 +67,22 @@
     enabled: yes
     state: restarted
 
+- name: Install Filebeat
+  yum:
+    name: https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.6.2-x86_64.rpm
+    state: present
+
+- name: Copy filebeat config
+  copy: src=filebeat.yml dest=/etc/filebeat/filebeat.yml
+
+- block:
+  - name: Enabe nginx config in filebeat
+    command: mv /etc/filebeat/modules.d/nginx.yml.disabled /etc/filebeat/modules.d/nginx.yml
+  ignore_errors: yes
+
+- name: Enable Filebeat
+  service:
+    name: filebeat
+    enabled: yes
+    state: started
+    

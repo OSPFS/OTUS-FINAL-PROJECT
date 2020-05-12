@@ -37,8 +37,7 @@
     state: present
     priv: CONNECT
 
-- name: Create a new database with name "zabbix"  
-
+- name: Create a new database with name "zabbix"
   postgresql_db:
     login_host: "{{ ipv4_eth1 }}"
     login_user: postgres
@@ -48,7 +47,6 @@
     encoding: UTF-8
 
 - name: Create zabbix DB User
-
   postgresql_user:
     login_host: "{{ ipv4_eth1 }}"
     login_user: postgres

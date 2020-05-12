@@ -39,5 +39,7 @@
     group: root
     mode: '0644'
 
-- name: Init Borg Backup
-  shell: borg init -e=none ssh://borg@10.10.10.19/srv/borg_backup/{{ ansible_hostname }} && /usr/local/bin/bbackup.sh
+- block:
+   - name: Init Borg Backup
+     shell: borg init -e=none ssh://borg@10.10.10.19/srv/borg_backup/{{ ansible_hostname }} && /usr/local/bin/bbackup.sh
+  ignore_errors: yes

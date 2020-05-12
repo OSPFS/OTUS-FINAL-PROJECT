@@ -50,6 +50,22 @@ MACHINES = {
                      {ip: '10.10.10.17', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
                   ]
     },
+    :db2 => {
+      :box_name => "centos/7",
+      :cpus => 2,
+      :memory => 512,
+      :net => [
+                 {ip: '10.10.10.15', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
+              ]
+    },
+    :db3 => {
+      :box_name => "centos/7",
+      :cpus => 2,
+      :memory => 512,
+      :net => [
+                 {ip: '10.10.10.16', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
+              ]
+    },
     :bckp => {
       :box_name => "centos/7",
       :cpus => 2,
@@ -90,22 +106,6 @@ MACHINES = {
       :net => [
                  {ip: '10.10.10.9', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
               ]
-    },
-    :db2 => {
-          :box_name => "centos/7",
-          :cpus => 2,
-          :memory => 512,
-          :net => [
-                     {ip: '10.10.10.15', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
-                  ]
-    },
-    :db3 => {
-          :box_name => "centos/7",
-          :cpus => 2,
-          :memory => 512,
-          :net => [
-                     {ip: '10.10.10.16', adapter: 2, netmask: "255.255.255.0", virtualbox__intnet: "lab-net", auto_config: false},                     
-                  ]
     },
     :webapp2 => {
       :box_name => "centos/7",

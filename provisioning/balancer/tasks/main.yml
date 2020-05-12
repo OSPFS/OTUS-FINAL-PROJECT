@@ -23,7 +23,10 @@
 - name: Copy filebeat config
   copy: src=filebeat.yml dest=/etc/filebeat/filebeat.yml
 
-- command: mv /etc/filebeat/modules.d/nginx.yml.disabled /etc/filebeat/modules.d/nginx.yml
+- block:
+  - name: Enabe nginx config in filebeat
+    command: mv /etc/filebeat/modules.d/nginx.yml.disabled /etc/filebeat/modules.d/nginx.yml
+  ignore_errors: yes
 
 - name: Install Nginx
   yum: name=nginx state=present

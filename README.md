@@ -13,7 +13,7 @@
 ```
 После разворачивания стенда, будут доступны (имена прописаны в публичном DNS):
 - https://cms.zzz.chat
-- https://zabbix.zzz.chat
+- https://zabbix.zzz.chat (пароль в файле zabbix.yml)
 - http://kibana.zzz.chat
 ## Схема проекта
 

@@ -1,3 +1,7 @@
+---
+# user: Admin
+# pass: xn3d9EMvEa6bVMh
+
 - hosts: zabbix
   become: yes
   vars:
